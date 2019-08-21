@@ -48,6 +48,7 @@ namespace WishList.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View("Login");
@@ -62,7 +63,10 @@ namespace WishList.Controllers
                 return View(model);
             var signInResult = _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false).Result;
             if (!signInResult.Succeeded)
+            {
                 ModelState.AddModelError(string.Empty, errorMessage: "Invalid login attempt.");
+                return View(model);
+            }                
             return RedirectToAction("Index", "Item");
         }
 
